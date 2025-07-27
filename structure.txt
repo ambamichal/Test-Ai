@@ -1,0 +1,6 @@
+Test-AI/
+├── README.md          # Ten plik
+├── src/              # Kod źródłowy
+├── data/             # Dane do testów
+├── notebooks/        # Jupyter notebooks
+└── docs/             # Dokumentacja
