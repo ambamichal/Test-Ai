@@ -1,0 +1,156 @@
+@echo off
+echo ========================================
+echo    KOMPLETNA INSTALACJA TEST-AI PROJECT
+echo ========================================
+echo.
+
+REM Sprawdzenie wersji Pythona
+echo Sprawdzam wersje Pythona...
+python --version
+if %errorlevel% neq 0 (
+    echo BLAD: Python nie jest zainstalowany!
+    echo Pobierz i zainstaluj Python z https://python.org
+    pause
+    exit /b 1
+)
+echo.
+
+REM Tworzenie struktury folderów
+echo Tworze strukture folderow...
+if not exist "src" mkdir src
+if not exist "data" mkdir data
+if not exist "notebooks" mkdir notebooks
+if not exist "docs" mkdir docs
+echo Foldery utworzone.
+
+REM Tworzenie pliku requirements.txt
+echo Tworze plik requirements.txt...
+(
+echo # Podstawowe biblioteki do uczenia maszynowego
+echo numpy^>=1.21.0
+echo pandas^>=1.3.0
+echo matplotlib^>=3.4.0
+echo seaborn^>=0.11.0
+echo scikit-learn^>=1.0.0
+echo.
+echo # Jupyter
+echo jupyter^>=1.0.0
+echo ipykernel^>=6.0.0
+echo.
+echo # Dodatkowe narzędzia
+echo requests^>=2.25.0
+echo pillow^>=8.2.0
+) > requirements.txt
+echo requirements.txt utworzony.
+
+REM Tworzenie podstawowego main.py
+echo Tworze podstawowy program src\main.py...
+(
+echo import numpy as np
+echo import pandas as pd
+echo import matplotlib.pyplot as plt
+echo from sklearn.datasets import load_iris
+echo from sklearn.model_selection import train_test_split
+echo from sklearn.ensemble import RandomForestClassifier
+echo from sklearn.metrics import accuracy_score
+echo.
+echo print^("🤖 Witaj w Test-AI!"^)
+echo print^("==================="^)
+echo.
+echo # Ladowanie danych
+echo data = load_iris^(^)
+echo X, y = data.data, data.target
+echo print^(f"Zaladowano {X.shape[0]} probek z {X.shape[1]} cechami"^)
+echo.
+echo # Podzial danych
+echo X_train, X_test, y_train, y_test = train_test_split^(X, y, test_size=0.3, random_state=42^)
+echo.
+echo # Trenowanie modelu
+echo model = RandomForestClassifier^(n_estimators=100, random_state=42^)
+echo model.fit^(X_train, y_train^)
+echo.
+echo # Predykcja i ocena
+echo y_pred = model.predict^(X_test^)
+echo accuracy = accuracy_score^(y_test, y_pred^)
+echo.
+echo print^(f"Dokladnosc modelu: {accuracy:.4f} ^({accuracy*100:.2f}%%^)"^)
+echo print^("✅ Program zakonczony pomyslnie!"^)
+) > src\main.py
+echo src\main.py utworzony.
+
+REM Tworzenie .gitignore
+echo Tworze plik .gitignore...
+(
+echo # Python
+echo __pycache__/
+echo *.pyc
+echo *.pyo
+echo *.pyd
+echo .Python
+echo venv/
+echo env/
+echo.
+echo # IDE
+echo .vscode/
+echo .idea/
+echo.
+echo # OS
+echo .DS_Store
+echo Thumbs.db
+echo.
+echo # Data
+echo *.csv
+echo !data/sample/
+) > .gitignore
+echo .gitignore utworzony.
+
+REM Tworzenie środowiska wirtualnego
+echo.
+echo Tworze srodowisko wirtualne...
+if exist venv (
+    echo Usuwam stare srodowisko...
+    rmdir /s /q venv
+)
+python -m venv venv
+echo Srodowisko wirtualne utworzone.
+
+REM Aktywacja środowiska
+echo Aktywuje srodowisko wirtualne...
+call venv\Scripts\activate.bat
+
+REM Aktualizacja pip
+echo Aktualizuje pip...
+python -m pip install --upgrade pip
+
+REM Instalacja zależności
+echo Instaluje zaleznosci...
+pip install -r requirements.txt
+
+if %errorlevel% neq 0 (
+    echo UWAGA: Niektore biblioteki mogly sie nie zainstalowac.
+    echo Sprobuj: pip install numpy pandas matplotlib scikit-learn jupyter
+)
+
+echo.
+echo ========================================
+echo        INSTALACJA ZAKONCZONA!
+echo ========================================
+echo.
+echo Pliki utworzone:
+echo ✅ requirements.txt
+echo ✅ src\main.py
+echo ✅ .gitignore
+echo ✅ Struktura folderow
+echo.
+echo Aby uruchomic program:
+echo 1. Aktywuj srodowisko: venv\Scripts\activate
+echo 2. Uruchom program: python src\main.py
+echo.
+echo Aby uruchomic Jupyter:
+echo jupyter notebook
+echo.
+echo Aby commitowac na Git:
+echo git add .
+echo git commit -m "Initial setup"
+echo.
+pause
