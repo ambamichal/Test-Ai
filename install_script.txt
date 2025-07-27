@@ -1,0 +1,58 @@
+@echo off
+echo ========================================
+echo       INSTALACJA TEST-AI PROJECT
+echo ========================================
+echo.
+
+REM Sprawdzenie wersji Pythona
+echo Sprawdzam wersje Pythona...
+python --version
+if %errorlevel% neq 0 (
+    echo BLAD: Python nie jest zainstalowany!
+    echo Pobierz i zainstaluj Python z https://python.org
+    pause
+    exit /b 1
+)
+echo.
+
+REM Tworzenie środowiska wirtualnego
+echo Tworze srodowisko wirtualne...
+if exist venv (
+    echo Srodowisko wirtualne juz istnieje.
+) else (
+    python -m venv venv
+    echo Srodowisko wirtualne utworzone.
+)
+echo.
+
+REM Aktywacja środowiska
+echo Aktywuje srodowisko wirtualne...
+call venv\Scripts\activate.bat
+
+REM Aktualizacja pip
+echo Aktualizuje pip...
+python -m pip install --upgrade pip
+
+REM Instalacja zależności
+echo Instaluje zaleznosci...
+pip install -r requirements.txt
+
+if %errorlevel% neq 0 (
+    echo BLAD: Nie udalo sie zainstalowac zaleznosci!
+    pause
+    exit /b 1
+)
+
+echo.
+echo ========================================
+echo        INSTALACJA ZAKONCZONA!
+echo ========================================
+echo.
+echo Aby uruchomic program:
+echo 1. Aktywuj srodowisko: venv\Scripts\activate
+echo 2. Uruchom program: python src\main.py
+echo.
+echo Aby uruchomic Jupyter:
+echo jupyter notebook
+echo.
+pause
